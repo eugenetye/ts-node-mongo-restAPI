@@ -6,8 +6,11 @@ import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import router from './router';
+import dotenv from 'dotenv';
 
 const app = express();
+dotenv.config();
+const mongoURL = process.env.MONGO_URL;
 
 app.use(cors({
     credentials: true,
@@ -23,10 +26,8 @@ server.listen(8080, () => {
     console.log('server running on http://localhost:8080/');
 });
 
-const MONGO_URL = 'mongodb+srv://eugenetye:eugenetye@cluster0.thml7db.mongodb.net/?retryWrites=true&w=majority'
-
 mongoose.Promise = Promise;
-mongoose.connect(MONGO_URL);
+mongoose.connect(mongoURL);
 mongoose.connection.on('error', (error: Error) => console.log(error));
 
 app.use('/', router());
